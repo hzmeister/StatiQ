@@ -2,4 +2,4 @@ Basic config to distribute bandwidth equally among users. Queue tree has a 2-tie
 
 The only downside of this config is that a p2p client(hundreds of small streams) can saturate all of the bandwidth. Can be converted for 100% equal distribution by deleting the heavy tier in mangle and queue tree, however.
 
-Script to populate mangle and queue is also included for easy modification. It's only run once. Mangle and queue rules it populates need to be before running again.
+Script to populate mangle and queue is also included for easy modification. The script is only run once. To run it again, the mangle and queue rules it populates need to be deleted.
