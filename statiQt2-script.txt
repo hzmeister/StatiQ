@@ -1,0 +1,23 @@
+:for i from=99 to 50 do={ 
+ /ip firewall mangle
+add action=mark-packet chain=forward dst-address="192.168.1.$i/32" new-packet-mark=("heavy-down-192.168.1.".($i)) packet-mark=heavy-down-pk passthrough=no;
+}
+:for i from=99 to 50 do={ 
+ /ip firewall mangle
+add action=mark-packet chain=forward dst-address="192.168.1.$i/32" new-packet-mark=("lan-down-192.168.1.".($i)) packet-mark=lan-down-pk passthrough=no;
+}
+:for i from=99 to 50 do={ 
+ /ip firewall mangle
+add action=mark-packet chain=forward new-packet-mark=("heavy-up-192.168.1.".($i)) packet-mark=heavy-up-pk passthrough=no src-address="192.168.1.$i/32";
+}
+:for i from=99 to 50 do={ 
+ /ip firewall mangle
+add action=mark-packet chain=forward new-packet-mark=("lan-up-192.168.1.".($i)) packet-mark=lan-up-pk passthrough=no src-address="192.168.1.$i/32";
+}
+:for i from=99 to 50 do={ 
+ /queue tree
+add name=("heavy-down-192.168.1.".($i)) packet-mark=("heavy-down-192.168.1.".($i)) parent=heavy-download queue=pcq-download;
+add name=("lan-down-192.168.1.".($i)) packet-mark=("lan-down-192.168.1.".($i)) parent=lan-download priority=7 queue=pcq-download;
+add name=("heavy-up-192.168.1.".($i)) packet-mark=("heavy-up-192.168.1.".($i)) parent=heavy-upload queue=pcq-upload;
+add name=("lan-up-192.168.1.".($i)) packet-mark=("lan-up-192.168.1.".($i)) parent=lan-upload priority=7 queue=pcq-upload;
+}
